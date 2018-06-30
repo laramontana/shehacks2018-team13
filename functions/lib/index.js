@@ -20,14 +20,19 @@ app.intent('feed.start', conv => {
         StartFeed: `${time.getHours()}:${time.getMinutes()}`,
         StopFeed: 0
     });
-    conv.add("Start feed");
+    conv.add(`Start feed: ${time.getHours()}:${time.getMinutes()}`);
 });
 app.intent('feed.stop', conv => {
+    //1 read  from the databse
+    //2 make the diffremce between Start
     const time = new Date();
     docRef.update({
         StopFeed: `${time.getHours()}:${time.getMinutes()}`
     });
-    conv.add("Feed stopped");
+    //onst startTimeRef = docRef.data().StartFeed;
+    conv.add(`Feed stopped: ${time.getHours()}:${time.getMinutes()}. Last time feeded: ${docRef.data()}`);
+    //const diff = time.getMinutes() - startTimeRef.split(":")[1].parseInt();
+    //Duration from last time feeded: ${diff}
 });
 exports.fulfillment = functions.https.onRequest(app);
 //var usersRef = ref.child("users");
