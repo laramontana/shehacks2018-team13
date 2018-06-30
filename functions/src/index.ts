@@ -31,20 +31,29 @@ app.intent('feed.start', conv => {
 }
 );
 
+const asyncTask = () => new Promise(
+    resolve => setTimeout(resolve,1000)
+    //docRef.equalTo("StartFeed").once("value", snap => {
+        //const startRef = snap.value();
+       // resolve();
+       
+   // })
+  );
+  
 app.intent('feed.stop', conv => {
     //1 read  from the databse
     //2 make the diffremce between Start
     const time = new Date();
-
     docRef.update({
         StopFeed: `${time.getHours()}:${time.getMinutes()}`
       });
-    //onst startTimeRef = docRef.data().StartFeed;
-    conv.add(`Feed stopped: ${time.getHours()}:${time.getMinutes()}. Last time feeded: ${docRef.data()}`);
-
-    //const diff = time.getMinutes() - startTimeRef.split(":")[1].parseInt();
-    //Duration from last time feeded: ${diff}
-   
+    return asyncTask().then(() => conv.add(`Feed stopped: ${time.getHours()}:${time.getMinutes()}`)
+);
+    // docRef.equalTo("StartFeed").once("value", snap => {
+    //     const startRef = snap.value();
+    //     conv.add(`Feed stopped: ${time.getHours()}:${time.getMinutes()}. Last feeded: ${startRef}`);
+    // });
+    //conv.add(`Feed stopped: ${time.getHours()}:${time.getMinutes()}`);
 });
 
 export const fulfillment = functions.https.onRequest(app);
