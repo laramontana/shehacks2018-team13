@@ -8,7 +8,12 @@ const app = dialogflow();
 
 app.intent('start_feed', conv => {
     const time = new Date();
-    conv.add(`hello world ${time.toString()}`);
+    conv.add(`Feed has started today at ${time.getUTCHours()}:${time.getUTCMinutes()}`);
+});
+
+app.intent('feed.stop', conv => {
+    const time = new Date();
+    conv.add(`Feed stoped at ${time.getUTCHours()}:${time.getUTCMinutes()}`);
 });
 
 export const fulfillment = functions.https.onRequest(app);
